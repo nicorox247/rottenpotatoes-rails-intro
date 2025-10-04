@@ -6,8 +6,19 @@ class MoviesController < ApplicationController
     # will render app/views/movies/show.<extension> by default
   end
 
+# MY CODE!!!
   def index
-    @movies = Movie.all
+    @all_ratings = Movie.all_ratings
+
+    # params[:ratings] is a hash like { "G"=>"1", "R"=>"1" } when boxes are checked
+    @ratings_to_show = if params[:ratings].present?
+                         params[:ratings].keys
+                       else
+                         @all_ratings # default: first visit or none checked -> show all & check all
+                       end
+
+    @movies = Movie.with_ratings(@ratings_to_show)
+
   end
 
   def new
