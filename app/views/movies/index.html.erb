@@ -26,19 +26,26 @@
   <%= submit_tag 'Refresh', id: 'ratings_submit', class: 'btn btn-primary' %>
 <% end %>
 
-<%# ---------- CLICKABLE HEADERS (part 3) ---------- %>
+<%# ---------- CLICKABLE HEADERS WITH HIGHLIGHT ---------- %>
 <% ratings_hash = (@ratings_to_show || @all_ratings).each_with_object({}) { |r, h| h[r] = '1' } %>
+<% title_active = @sort_by == 'title' %>
+<% date_active  = @sort_by == 'release_date' %>
 
 <p class="mt-3">
   Sort by:
   <%= link_to 'Title',
               movies_path(sort_by: 'title', ratings: ratings_hash),
-              id: 'title_header' %>
+              id: 'title_header',
+              class: (title_active ? 'active-sort' : nil),
+              'aria-current': (title_active ? 'true' : 'false') %>
   |
   <%= link_to 'Release date',
               movies_path(sort_by: 'release_date', ratings: ratings_hash),
-              id: 'release_date_header' %>
+              id: 'release_date_header',
+              class: (date_active ? 'active-sort' : nil),
+              'aria-current': (date_active ? 'true' : 'false') %>
 </p>
+
 
 <div id="movies" class="mt-3">
   <% @movies.each do |movie| %>

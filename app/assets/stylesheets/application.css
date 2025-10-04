@@ -13,3 +13,8 @@
  *= require_tree .
  *= require_self
  */
+
+ .active-sort {
+  font-weight: bold;
+  text-decoration: underline;
+}
