@@ -10,15 +10,19 @@ class MoviesController < ApplicationController
   def index
     @all_ratings = Movie.all_ratings
 
-    # params[:ratings] is a hash like { "G"=>"1", "R"=>"1" } when boxes are checked
+    # ratings to show (default: all)
     @ratings_to_show = if params[:ratings].present?
                          params[:ratings].keys
                        else
-                         @all_ratings # default: first visit or none checked -> show all & check all
+                         @all_ratings
                        end
-
-    @movies = Movie.with_ratings(@ratings_to_show)
-
+  
+    # whitelist sort field; default to 'title' (matches the screenshot)
+    @sort_by = %w[title release_date].include?(params[:sort_by]) ? params[:sort_by] : 'title'
+  
+    @movies = Movie
+                .with_ratings(@ratings_to_show)
+                .order(@sort_by => :asc)
   end
 
   def new

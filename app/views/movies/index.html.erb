@@ -12,8 +12,33 @@
       </div>
     <% end %>
   </div>
+
+  <div>
+    <label class="form-label me-2" for="sort_by">Sort by:</label>
+    <%= select_tag :sort_by,
+                   options_for_select([["Title", "title"],
+                                       ["Release date", "release_date"]],
+                                       @sort_by),
+                   id:    "sort_by",
+                   class: "form-select d-inline w-auto" %>
+  </div>
+
   <%= submit_tag 'Refresh', id: 'ratings_submit', class: 'btn btn-primary' %>
 <% end %>
+
+<%# ---------- CLICKABLE HEADERS (part 3) ---------- %>
+<% ratings_hash = (@ratings_to_show || @all_ratings).each_with_object({}) { |r, h| h[r] = '1' } %>
+
+<p class="mt-3">
+  Sort by:
+  <%= link_to 'Title',
+              movies_path(sort_by: 'title', ratings: ratings_hash),
+              id: 'title_header' %>
+  |
+  <%= link_to 'Release date',
+              movies_path(sort_by: 'release_date', ratings: ratings_hash),
+              id: 'release_date_header' %>
+</p>
 
 <div id="movies" class="mt-3">
   <% @movies.each do |movie| %>
